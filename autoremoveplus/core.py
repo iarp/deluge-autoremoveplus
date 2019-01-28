@@ -23,9 +23,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with deluge.    If not, write to:
-# 	The Free Software Foundation, Inc.,
-# 	51 Franklin Street, Fifth Floor
-# 	Boston, MA  02110-1301, USA.
+#   The Free Software Foundation, Inc.,
+#   51 Franklin Street, Fifth Floor
+#   Boston, MA  02110-1301, USA.
 #
 #    In addition, as a special exception, the copyright holders give
 #    permission to link the code of portions of this program with the OpenSSL
@@ -85,13 +85,16 @@ filter_funcs = {
     'func_added': lambda (i, t): (time.time() - t.time_added) / 86400.0,
     'func_seed_time': lambda (i, t):
         t.get_status(['seeding_time'])['seeding_time'] / 86400.0,
-    'func_seeders': lambda (i, t): t.get_status(['total_seeds'])['total_seeds']
+    'func_seeders': lambda (i, t): t.get_status(['total_seeds'])['total_seeds'],
+    'func_availability': lambda (i, t): t.get_status(['distributed_copies'])['distributed_copies']
 }
 
 sel_funcs = {
     'and': lambda (a, b): a and b,
     'or': lambda (a, b): a or b
 }
+
+
 
 
 class Core(CorePluginBase):
@@ -152,7 +155,8 @@ class Core(CorePluginBase):
             'func_ratio': 'Ratio',
             'func_added': 'Date Added',
             'func_seed_time': 'Seed Time',
-            'func_seeders': 'Seeders'
+            'func_seeders': 'Seeders',
+            'func_availability': 'Availability'
         }
 
     @export
@@ -294,13 +298,13 @@ class Core(CorePluginBase):
         for i in torrent_ids:
             t = torrentmanager.torrents.get(i, None)
 
-            try:
-                finished = t.is_finished
-            except:
-                continue
-            else:
-                if not finished:
-                    continue
+            #try:
+            #    finished = t.is_finished
+            #except:
+            #    continue
+            #else:
+            #    if not finished:
+            #        continue
 
             try:
                 ignored = self.torrent_states[i]
@@ -389,10 +393,10 @@ class Core(CorePluginBase):
                 "AutoRemovePlus: Remove torrent %s, %s"
                 % (i, t.get_status(['name'])['name'])
             )
-            log.debug(
+            log.warn(
                 filter_funcs.get(self.config['filter'], _get_ratio)((i, t))
             )
-            log.debug(
+            log.warn(
                 filter_funcs.get(self.config['filter2'], _get_ratio)((i, t))
             )
             if enabled:
@@ -400,7 +404,7 @@ class Core(CorePluginBase):
                 filter_1 = filter_funcs.get(
                     self.config['filter'],
                     _get_ratio
-                )((i, t)) >= min_val
+                )((i, t)) <= min_val
                 # Get result of second condition test
                 filter_2 = filter_funcs.get(
                     self.config['filter2'], _get_ratio
@@ -441,9 +445,15 @@ class Core(CorePluginBase):
                 if remove_cond:
                     if not remove:
                         self.pause_torrent(t)
+                        log.warn(
+                        "AutoRemovePlus: Pause torrent %s, %s, %s, %.3f"
+                        % (i, t.get_status(['name'])['name'], t.get_status(['distributed_copies'])['distributed_copies'], (time.time() - t.time_added) / 86400.0)
                     else:
                         if self.remove_torrent(torrentmanager, i, remove_data):
                             changed = True
+                            log.warn(
+                            "AutoRemovePlus: Delete torrent %s, %s, %s, %.3f"
+                            % (i, t.get_status(['name'])['name'], t.get_status(['distributed_copies'])['distributed_copies'], (time.time() - t.time_added) / 86400.0)
 
         # If a torrent exemption state has been removed save changes
         if changed:
