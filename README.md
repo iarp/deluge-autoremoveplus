@@ -7,6 +7,11 @@ based on AutoRemove 0.1 by Jamie Lennox.
 
 This is a GtkUI and WebUI plugin.
 
+New
+---
+Added autoremove based on availability
+
+
 Features
 --------
 - Select how many torrents are allowed at the same time.
