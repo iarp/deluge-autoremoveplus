@@ -66,6 +66,20 @@ Pause torrents instead of removing them:
 
 The rest of the options are pretty self explanatory
 
+Command line usage
+------------------
+copy mediaserver.py to a folder of your liking and cd to it
+edit /data/server.ini to include the url of your server and api keys for sonarr/radarr/lidarr, can be found under 
+settings->general
+
+syntax:
+
+python3 mediaserver sonarr queue
+=> returns sonarr queue
+
+python3 mediaserver radarr delete --item=12345567
+> deletes and blacklists that item and returns {} if successful
+
 Building
 --------
 
