@@ -23,9 +23,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with deluge.    If not, write to:
-# 	The Free Software Foundation, Inc.,
-# 	51 Franklin Street, Fifth Floor
-# 	Boston, MA  02110-1301, USA.
+#   The Free Software Foundation, Inc.,
+#   51 Franklin Street, Fifth Floor
+#   Boston, MA  02110-1301, USA.
 #
 #    In addition, as a special exception, the copyright holders give
 #    permission to link the code of portions of this program with the OpenSSL
@@ -39,11 +39,13 @@
 #
 
 from deluge.plugins.init import PluginInitBase
-
+import logging
+log = logging.getLogger(__name__)
 
 class CorePlugin(PluginInitBase):
     def __init__(self, plugin_name):
-        from core import Core as _plugin_cls
+        log.debug("Initing: {}, {}".format(self,plugin_name))
+        from autoremoveplus.core import Core as _plugin_cls
         self._plugin_cls = _plugin_cls
         super(CorePlugin, self).__init__(plugin_name)
 
@@ -53,10 +55,16 @@ class GtkUIPlugin(PluginInitBase):
         from gtkui import GtkUI as _plugin_cls
         self._plugin_cls = _plugin_cls
         super(GtkUIPlugin, self).__init__(plugin_name)
+        
+class Gtk3UIPlugin(PluginInitBase):
+    def __init__(self, plugin_name):
+        from autoremoveplus.gtk3ui import Gtk3UI as _plugin_cls
+        self._plugin_cls = _plugin_cls
+        super(Gtk3UIPlugin, self).__init__(plugin_name)
 
 
 class WebUIPlugin(PluginInitBase):
     def __init__(self, plugin_name):
-        from webui import WebUI as _plugin_cls
+        from autoremoveplus.webui import WebUI as _plugin_cls
         self._plugin_cls = _plugin_cls
         super(WebUIPlugin, self).__init__(plugin_name)

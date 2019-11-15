@@ -40,7 +40,8 @@
 
 import gtk
 
-from deluge.log import LOG as log
+import logging
+log = logging.getLogger(__name__)
 from deluge.ui.client import client
 from deluge.plugins.pluginbase import GtkPluginBase
 import deluge.component as component

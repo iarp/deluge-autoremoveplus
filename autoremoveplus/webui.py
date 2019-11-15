@@ -1,4 +1,4 @@
-#
+from __future__ import unicode_literals#
 # webui.py
 #
 # Copyright (C) 2014-2016 Omar Alvarez <osurfer3@hotmail.com>
@@ -23,9 +23,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with deluge.    If not, write to:
-# 	The Free Software Foundation, Inc.,
-# 	51 Franklin Street, Fifth Floor
-# 	Boston, MA  02110-1301, USA.
+#   The Free Software Foundation, Inc.,
+#   51 Franklin Street, Fifth Floor
+#   Boston, MA  02110-1301, USA.
 #
 #    In addition, as a special exception, the copyright holders give
 #    permission to link the code of portions of this program with the OpenSSL
@@ -38,12 +38,13 @@
 #    statement from all source files in the program, then also delete it here.
 #
 
-from deluge.log import LOG as log
+import logging
+log = logging.getLogger(__name__)
 from deluge.ui.client import client
 from deluge import component
 from deluge.plugins.pluginbase import WebPluginBase
 
-from common import get_resource
+from autoremoveplus.common import get_resource
 
 class WebUI(WebPluginBase):
 
