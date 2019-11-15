@@ -76,7 +76,7 @@ settings->general.
 syntax:
 
 python3 mediaserver sonarr queue
-=> returns sonarr queue
+> returns sonarr queue
 
 python3 mediaserver radarr delete --item=12345567
 > deletes and blacklists that item and returns {} if successful
