@@ -68,9 +68,10 @@ The rest of the options are pretty self explanatory
 
 Command line usage
 ------------------
-copy mediaserver.py to a folder of your liking and cd to it
+copy mediaserver.py to a folder of your liking and cd to it.
+
 edit /data/server.ini to include the url of your server and api keys for sonarr/radarr/lidarr, can be found under 
-settings->general
+settings->general.
 
 syntax:
 
