@@ -132,18 +132,25 @@ class Core(CorePluginBase):
         # mid-program do_remove is still run
         self.looping_call = LoopingCall(self.do_remove)
         deferLater(reactor, 5, self.start_looping)
-        
-        apikey_sonarr = self.config['api_sonarr']
-        apikey_radarr = self.config['api_radarr']
-        apikey_lidarr = self.config['api_lidarr']
-        
-        use_sonarr    = self.config['enable_sonarr']
-        use_radarr    = self.config['enable_radarr']
-        use_lidarr    = self.config['enable_lidarr']
-        
-        server        = self.config['server_url']
-        
-        log.info("Sonarr: {}, {}, Radarr: {}, {}, Lidarr: {}, {}, Server: {}".format(use_sonarr,apikey_sonarr,use_radarr,apikey_radarr,use_lidarr,apikey_lidarr,server))
+        try:
+          apikey_sonarr = self.config['api_sonarr']
+          apikey_radarr = self.config['api_radarr']
+          apikey_lidarr = self.config['api_lidarr']
+          use_sonarr    = self.config['enable_sonarr']
+          use_radarr    = self.config['enable_radarr']
+          use_lidarr    = self.config['enable_lidarr']
+          server        = self.config['server_url']
+        except KeyError as e:
+          log.warning("Unable to read server config, so disabling sonarr/radarr/lidarr for now. Missing key: {}".format(e))
+          use_sonarr    = False
+          use_radarr    = False
+          use_lidarr    = False
+          apikey_sonarr = None
+          apikey_radarr = None
+          apikey_lidarr = None
+          server        = None
+          
+        log.info("Server config: Sonarr: enabled={},key={}, Radarr: enabled={}, key={}, Lidarr: enabled={}, key={}, Server: url={}".format(use_sonarr,apikey_sonarr,use_radarr,apikey_radarr,use_lidarr,apikey_lidarr,server))
         
         self.sonarr = Mediaserver(server,apikey_sonarr,'sonarr')
         self.lidarr = Mediaserver(server,apikey_lidarr,'lidarr')
