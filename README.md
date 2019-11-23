@@ -2,10 +2,17 @@ AutoRemovePlus
 ==============
 
 AutoRemovePlus is a plugin for [Deluge](http://deluge-torrent.org) that
-you can use to automatically remove torrents. Its
-based on AutoRemove 0.1 by Jamie Lennox.
+you can use to automatically remove torrents. It's
+based on AutoRemove 0.6.1 by Omar Alvarez, which in turn is based on 0.1 by Jamie Lennox.
 
-This is a GtkUI and WebUI plugin.
+This is a Gtk3UI and WebUI plugin. However, since there is not yet any gtk client for wndows for deluge 2.03, this part is currently untested.
+
+New features:
+-------------
+- First condition is still a minimum, but the second condition is now maximum. Play with these to accomplish what you want
+- New option that only applies to finished torrents: pause after hours, and remove after hours.
+- Connection to sonarr/lidarr/radarr to blacklist torrent and make the remove through those clients instead. But currently causes http 500 error. Works from command line though.
+- Cleaned up the inconsistent times from days and now it's in hours instead.
 
 Features
 --------
@@ -25,13 +32,9 @@ Features
 
 Usage
 -----
-Look for torrents to remove every day:
-
-> Check every: 1
-
 Look for torrents to remove every hour:
 
-> Check every: 0.0416
+> Check every: 1
 
 Remove every torrent that meets minimum criteria:
 
@@ -49,13 +52,9 @@ Only remove torrents when the main HDD has less than 10 GB free:
 
 > Minimum HDD space: 10
 
-Remove torrents that have a ratio over 2.0 and have been seeding for at least 4 days:
+Remove torrents that have an availability under 1.0 and were added 4 days ago or more:
 
-> Remove by: Ratio, Min: 2.0, and, Remove by: Seed Time, Min: 4  
-
-Remove torrents that have a ratio over 2.0 or have been seeding for at least 4 days:
-
-> Remove by: Ratio, Min: 2.0, or, Remove by: Seed Time, Min: 4
+> Remove by: Availability, Min: 1.0, and, Remove by: Age in days, Max: 4  
 
 Remove torrents only according to first criteria:
 
@@ -66,6 +65,21 @@ Pause torrents instead of removing them:
 > :black_small_square: Remove torrents
 
 The rest of the options are pretty self explanatory
+
+Command line usage
+------------------
+copy mediaserver.py to a folder of your liking and cd to it.
+
+edit /data/server.ini to include the url of your server and api keys for sonarr/radarr/lidarr, can be found under 
+settings->general.
+
+syntax:
+
+python3 mediaserver sonarr queue
+> returns sonarr queue
+
+python3 mediaserver radarr delete --item=12345567
+> deletes and blacklists that item and returns {} if successful
 
 Building
 --------
