@@ -43,6 +43,7 @@ __copyright__   = "Copyright 2019"
 #    statement from all source files in the program, then also delete it here.
 #
 from past.utils import old_div
+import datetime
 from deluge.log import LOG as log
 from deluge.plugins.pluginbase import CorePluginBase
 import deluge.component as component
@@ -495,7 +496,8 @@ class Core(CorePluginBase):
                 try:
                     name = t.get_status(['name'])['name']
                     age = _age_in_days((i,t)) # age in days
-                    seedtime = t.get_status(['seeding_time'])['seeding_time']/3600 #seed time in hours
+                    # seedtime = t.get_status(['seeding_time'])['seeding_time']/3600 #seed time in hours
+                    seedtime = (datetime.datetime.now().timestamp() - t.get_status(['completed_time'])['completed_time']) / 3600 or 0
                     ratio = t.get_status(['ratio'])['ratio']
                     availability = t.get_status(['distributed_copies'])['distributed_copies']
                     isFinished = t.get_status(['is_finished'])['is_finished']
