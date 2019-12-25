@@ -110,7 +110,7 @@ sel_funcs = {
 class Core(CorePluginBase):
 
     def enable(self):
-        log.debug("AutoRemovePlus: Enabled")
+        log.info("AutoRemovePlus: Enabled")
 
         self.config = deluge.configmanager.ConfigManager(
             "autoremoveplus.conf",
@@ -240,18 +240,18 @@ class Core(CorePluginBase):
         try:
             torrent.pause()
         except Exception as e:
-            log.warning("AutoRemovePlus: Problems pausing torrent: {}".format(e))
+            log.exception("AutoRemovePlus: Problems pausing torrent: {}".format(e))
 
     def remove_torrent(self, torrentmanager, tid, remove_data):
         log.info("Running remove_torrent: {} with remove data = {}".format(tid,remove_data))
         try:
             torrentmanager.remove(tid, remove_data=remove_data)
-        except Exception as e:
-            log.warning("AutoRemovePlus: Error removing torrent {}: {}".format(tid,e))
+        except Exception:
+            log.exception("AutoRemovePlus: Error signalling deluge to remove torrent {}.".format(tid))
         try:
             del self.torrent_states.config[tid]
-        except KeyError as e:
-            log.warning("AutoRemovePlus: Error removing torrent {}: {}".format(tid, e))
+        except KeyError:
+            log.exception("AutoRemovePlus: Error removing torrent from states config {}. (this is fine)".format(tid))
             return False
         else:
             return True
@@ -504,7 +504,7 @@ class Core(CorePluginBase):
                 except Exception as e:
                     log.error("Error with torrent: {}".format(e))
                     continue
-                    
+
                 if not isFinished:
                     try:
                         label_str = component.get("CorePlugin.Label")._status_get_label(i)
@@ -575,7 +575,7 @@ class Core(CorePluginBase):
 
                 else: # is finished
                     
-                  log.debug("Fin.: {}, seed time:{}/{}, ratio: {}, spec. rules = {}, sr cond. = {}/{},isfinished = {}, hash = {}".format(name,seedtime,seedtime_limit,ratio,specific_rules,remove_cond,seed_remove_cond,isFinished,hash))                  
+                  log.debug("Fin.: {}, seed time:{}/{}, ratio: {}, spec. rules = {}, sr cond. = {}/{},isfinished = {}, hash = {}".format(name,seedtime,seedtime_limit,ratio,specific_rules,remove_cond,seed_remove_cond,isFinished,hash))
                   if (not specific_rules) or (seed_remove_cond):                                       
                     #remove condition
                     if seedtime > seedtime_limit:
