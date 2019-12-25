@@ -583,7 +583,7 @@ class Core(CorePluginBase):
                     if seedtime > seedtime_limit:
                         if not always_pause_seed:
                             #Sending False to remove data because it is probably not intended for completed torrents
-                            self.remove_torrent(torrentmanager, i, False)
+                            self.remove_torrent(torrentmanager, i, remove_data)
                             changed = True
                             log.info("AutoRemovePlus: removing torrent from seed: {} due to seed time = {}/{} h".format(name,seedtime,seedtime_limit))
                         
