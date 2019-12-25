@@ -320,8 +320,8 @@ class Core(CorePluginBase):
           lidarr_list = self.lidarr.get_queue() if use_lidarr else {}
           
           #prevent hit & run
-          seedtime_pause = seedtime_pause if seedtime_pause > 20.0 else 20.0
-          seedtime_limit = seedtime_limit if seedtime_limit > 24.0 else 24.0
+          # seedtime_pause = seedtime_pause if seedtime_pause > 20.0 else 20.0
+          # seedtime_limit = seedtime_limit if seedtime_limit > 24.0 else 24.0
           
           log.info("Using sonarr: {}, radarr: {}, lidarr: {}".format(use_sonarr,use_radarr,use_lidarr))
           log.info("Size of lists: sonarr:{}, lidarr:{}, radarr:{}".format(len(sonarr_list),len(lidarr_list),len(radarr_list)))

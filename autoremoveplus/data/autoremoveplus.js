@@ -364,7 +364,7 @@ Deluge.plugins.autoremoveplus.ui.PreferencePage = Ext.extend(Ext.TabPanel, {
                 fieldLabel: _('Pause after seedtime (h)'),
                 value: 24,
                 maxValue: 9999,
-                minValue: 20,
+                minValue: 0.5,
                 flex: 0.2
             }]
         });
@@ -386,7 +386,7 @@ Deluge.plugins.autoremoveplus.ui.PreferencePage = Ext.extend(Ext.TabPanel, {
                 fieldLabel: _('Remove after seedtime (h)'),
                 value: 48,
                 maxValue: 9999,
-                minValue: 24,
+                minValue: 0.5,
                 flex: 0.2
             }]
         });
